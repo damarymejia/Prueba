@@ -3,6 +3,8 @@ import {
   Card, CardBody, Container, Row, Col, Table, Input, Button, FormGroup, Label,
 } from "reactstrap";
 
+import Header from "components/Headers/Header.js";
+
 const PanelFacturacion = () => {
   const [filtros, setFiltros] = useState({
     cliente: "", fecha: "", estado: "",
@@ -19,7 +21,10 @@ const PanelFacturacion = () => {
   };
 
   return (
+    
     <Container className="mt-4">
+      <Header />
+            {/* Page content */}
       <Card>
         <CardBody>
           <Row form>

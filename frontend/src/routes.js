@@ -23,6 +23,15 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 
+// Importa los componentes de tu módulo de inventario
+import ListaActivos from "views/examples/ListaActivos.js";
+import RegistrarActivo from "views/examples/RegistrarActivo.js";
+import GestionarStock from "views/examples/GestionarStock.js";
+import GestionarMantenimiento from "views/examples/GestionarMantenimiento.js";
+import GenerarReportes from "views/examples/GenerarReportes.js";
+import InventarioHub from "views/examples/InventarioHub.js"; // <--- Importa el nuevo componente central
+
+
 import PanelFacturacion from "views/facturacion/PanelFacturacion";
 import CrearFactura from "views/facturacion/CrearFactura";
 import HistorialFactura from "views/facturacion/HistorialFactura";
@@ -38,6 +47,56 @@ var routes = [
     component: <Index />,
     layout: "/admin",
   },
+  {
+    // Este es el único elemento "Inventario" visible en el sidebar ahora
+    path: "/inventario", // Ruta principal para el módulo de inventario
+    name: "Inventario",
+    icon: "ni ni-archive-2 text-blue", // Icono para el menú principal de Inventario
+    component: InventarioHub, // <--- Este es el componente que se renderizará al hacer clic
+    layout: "/admin",
+  },
+  // --- Rutas del módulo de Inventario (ahora ocultas del sidebar pero accesibles desde InventarioHub) ---
+  {
+    path: "/lista-activos",
+    name: "Inventario General", // Nombre aún relevante para el título de la página
+    icon: "ni ni-box-2 text-primary",
+    component: ListaActivos,
+    layout: "/admin",
+    hidden: true, // <--- Oculta esta ruta del sidebar
+  },
+  {
+    path: "/registrar-activo",
+    name: "Registrar Activo",
+    icon: "ni ni-fat-add text-success",
+    component: RegistrarActivo,
+    layout: "/admin",
+    hidden: true, // <--- Oculta esta ruta del sidebar
+  },
+  {
+    path: "/gestionar-stock",
+    name: "Gestionar Stock",
+    icon: "ni ni-chart-bar-32 text-info",
+    component: GestionarStock,
+    layout: "/admin",
+    hidden: true, // <--- Oculta esta ruta del sidebar
+  },
+  {
+    path: "/gestionar-mantenimiento",
+    name: "Controlar Mantenimiento",
+    icon: "ni ni-settings-gear-65 text-primary",
+    component: GestionarMantenimiento,
+    layout: "/admin",
+    hidden: true, // <--- Oculta esta ruta del sidebar
+  },
+  {
+    path: "/generar-reportes",
+    name: "Generar Reportes",
+    icon: "ni ni-book-bookmark text-green",
+    component: GenerarReportes,
+    layout: "/admin",
+    hidden: true, // <--- Oculta esta ruta del sidebar
+  },
+  // --- Rutas de ejemplo (mantén o elimina según necesites) ---
   {
     path: "/icons",
     name: "Icons",
