@@ -92,7 +92,7 @@ const AdminNavbar = () => {
                   tag={Link}
                 >
                   <i className="ni ni-single-02" />
-                  <span className="nav-link-inner--text">Profile</span>
+                  <span className="nav-link-inner--text">Perfil</span>
                 </NavLink>
               </NavItem>
             </Nav>
