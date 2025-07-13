@@ -27,7 +27,7 @@ import PanelFacturacion from "views/facturacion/PanelFacturacion";
 import CrearFactura from "views/facturacion/CrearFactura";
 import HistorialFactura from "views/facturacion/HistorialFactura";
 
-
+import Programacion from "views/programacion/programacion";
 
 
 var routes = [
@@ -101,6 +101,14 @@ var routes = [
   component: <HistorialFactura />,
   layout: "/admin",
 },
+  {
+    path: "/programacion",
+    name: "Programación",
+    icon: "ni ni-calendar-grid-58 text-primary",
+    component: <Programacion />,
+    layout: "/admin",
+  },
+
 
   
 ];
