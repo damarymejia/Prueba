@@ -17,7 +17,7 @@ const Profile = () => {
   return (
     <>
       <UserHeader />
-      {/* Page content */}
+      {/* Contenido de la página */}
       <Container className="mt--7" fluid>
         <Row>
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
@@ -44,7 +44,7 @@ const Profile = () => {
                     onClick={(e) => e.preventDefault()}
                     size="sm"
                   >
-                    Connectar
+                    Conectar
                   </Button>
                   <Button
                     className="float-right"
@@ -53,7 +53,7 @@ const Profile = () => {
                     onClick={(e) => e.preventDefault()}
                     size="sm"
                   >
-                    Mesaje
+                    Mensaje
                   </Button>
                 </div>
               </CardHeader>
@@ -66,22 +66,22 @@ const Profile = () => {
                   </h3>
                   <div className="h5 font-weight-300">
                     <i className="ni location_pin mr-2" />
-                    Bucharest, Romania
+                    Bucarest, Rumania
                   </div>
                   <div className="h5 mt-4">
                     <i className="ni business_briefcase-24 mr-2" />
-                    Solution Manager - Creative Tim Officer
+                    Gerente de Soluciones - Oficial de Creative Tim
                   </div>
                   <div>
                     <i className="ni education_hat mr-2" />
-                    University of Computer Science
+                    Universidad de Ciencias de la Computación
                   </div>
                   <hr className="my-4" />
                   <p>
                     
                   </p>
                   <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    Show more
+                    Mostrar más
                   </a>
                 </div>
               </CardBody>
@@ -92,7 +92,7 @@ const Profile = () => {
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">My account</h3>
+                    <h3 className="mb-0">Mi cuenta</h3>
                   </Col>
                   <Col className="text-right" xs="4">
                     <Button
@@ -109,7 +109,7 @@ const Profile = () => {
               <CardBody>
                 <Form>
                   <h6 className="heading-small text-muted mb-4">
-                    User information
+                    Información del usuario
                   </h6>
                   <div className="pl-lg-4">
                     <Row>
@@ -119,13 +119,13 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-username"
                           >
-                            Username
+                            Nombre de usuario
                           </label>
                           <Input
                             className="form-control-alternative"
                             defaultValue="lucky.jesse"
                             id="input-username"
-                            placeholder="Username"
+                            placeholder="Nombre de usuario"
                             type="text"
                           />
                         </FormGroup>
@@ -136,12 +136,12 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-email"
                           >
-                            Email address
+                            Correo electrónico
                           </label>
                           <Input
                             className="form-control-alternative"
                             id="input-email"
-                            placeholder="jesse@example.com"
+                            placeholder="jesse@ejemplo.com"
                             type="email"
                           />
                         </FormGroup>
@@ -154,13 +154,13 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-first-name"
                           >
-                            First name
+                            Nombre
                           </label>
                           <Input
                             className="form-control-alternative"
                             defaultValue="Lucky"
                             id="input-first-name"
-                            placeholder="First name"
+                            placeholder="Nombre"
                             type="text"
                           />
                         </FormGroup>
@@ -171,13 +171,13 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-last-name"
                           >
-                            Last name
+                            Apellido
                           </label>
                           <Input
                             className="form-control-alternative"
                             defaultValue="Jesse"
                             id="input-last-name"
-                            placeholder="Last name"
+                            placeholder="Apellido"
                             type="text"
                           />
                         </FormGroup>
@@ -185,9 +185,9 @@ const Profile = () => {
                     </Row>
                   </div>
                   <hr className="my-4" />
-                  {/* Address */}
+                  {/* Dirección */}
                   <h6 className="heading-small text-muted mb-4">
-                    Contact information
+                    Información de contacto
                   </h6>
                   <div className="pl-lg-4">
                     <Row>
@@ -197,13 +197,13 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-address"
                           >
-                            Address
+                            Dirección
                           </label>
                           <Input
                             className="form-control-alternative"
                             defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
                             id="input-address"
-                            placeholder="Home Address"
+                            placeholder="Dirección"
                             type="text"
                           />
                         </FormGroup>
@@ -216,13 +216,13 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-city"
                           >
-                            City
+                            Ciudad
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="New York"
+                            defaultValue="Nueva York"
                             id="input-city"
-                            placeholder="City"
+                            placeholder="Ciudad"
                             type="text"
                           />
                         </FormGroup>
@@ -233,13 +233,13 @@ const Profile = () => {
                             className="form-control-label"
                             htmlFor="input-country"
                           >
-                            Country
+                            País
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="United States"
+                            defaultValue="Estados Unidos"
                             id="input-country"
-                            placeholder="Country"
+                            placeholder="País"
                             type="text"
                           />
                         </FormGroup>
@@ -248,14 +248,14 @@ const Profile = () => {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-country"
+                            htmlFor="input-postal-code"
                           >
-                            Postal code
+                            Código postal
                           </label>
                           <Input
                             className="form-control-alternative"
                             id="input-postal-code"
-                            placeholder="Postal code"
+                            placeholder="Código postal"
                             type="number"
                           />
                         </FormGroup>
@@ -263,17 +263,17 @@ const Profile = () => {
                     </Row>
                   </div>
                   <hr className="my-4" />
-                  {/* Description */}
-                  <h6 className="heading-small text-muted mb-4">About me</h6>
+                  {/* Descripción */}
+                  <h6 className="heading-small text-muted mb-4">Sobre mí</h6>
                   <div className="pl-lg-4">
                     <FormGroup>
-                      <label>About Me</label>
+                      <label>Sobre mí</label>
                       <Input
                         className="form-control-alternative"
-                        placeholder="A few words about you ..."
+                        placeholder="Unas palabras sobre ti ..."
                         rows="4"
-                        defaultValue="A beautiful Dashboard for Bootstrap 4. It is Free and
-                        Open Source."
+                        defaultValue="Un hermoso Dashboard para Bootstrap 4. Es Gratis y
+                        de Código Abierto."
                         type="textarea"
                       />
                     </FormGroup>

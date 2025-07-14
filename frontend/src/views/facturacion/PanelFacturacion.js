@@ -126,7 +126,7 @@ const PanelFacturacion = () => {
 
                 <i className="ni ni-tag mr-2 text-default" />
 
-              <Button color="default" href="/admin/facturacion/descuentos">
+              <Button color="default" href="/admin/facturacion/cai">
                 Administrar CAI
               </Button>
             </CardBody>

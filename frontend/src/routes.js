@@ -22,6 +22,11 @@ import InventarioHub from "views/examples/InventarioHub.js";
 import PanelFacturacion from "views/facturacion/PanelFacturacion";
 import CrearFactura from "views/facturacion/CrearFactura";
 import HistorialFactura from "views/facturacion/HistorialFactura";
+import Factura from "views/facturacion/Factura";
+import RegistrarPago from "views/facturacion/RegistrarPago";
+import CAI from "views/facturacion/Cai";
+import Contratos from "views/facturacion/Contratos";
+import Canjes from "views/facturacion/Canjes";
 
 // Programación
 import Programacion from "views/programacion/programacion";
@@ -124,6 +129,46 @@ const routes = [
     layout: "/admin",
     hidden: true,
   },
+  {
+    path: "/facturacion/factura/:id",
+    name: "Historial Facturas",
+    icon: "ni ni-time-alarm text-orange",
+    component: Factura,
+    layout: "/admin",
+    hidden: true,
+  },  
+    {
+    path: "/facturacion/pagos",
+    name: "Registrar Pago",
+    icon: "ni ni-money-coins text-success",
+    component: RegistrarPago,
+    layout: "/admin",
+    hidden: true,
+  },
+  {
+    path: "/facturacion/cai",
+    name: "Control CAI",
+    icon: "ni ni-key-25 text-warning",
+    component: CAI,
+    layout: "/admin",
+    hidden: true,
+  },
+  {
+    path: "/facturacion/contratos",
+    name: "Contratos",
+    icon: "ni ni-briefcase-24 text-info",
+    component: Contratos,
+    layout: "/admin",
+    hidden: true,
+  },
+  {
+    path: "/facturacion/canjes",
+    name: "Canjes",
+    icon: "ni ni-basket text-danger",
+    component: Canjes,
+    layout: "/admin",
+    hidden: true,
+  },
   // Programación
   {
     path: "/programacion",
@@ -180,6 +225,7 @@ const routes = [
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin",
+    hidden: true,
   },
 // Mapa
     {
