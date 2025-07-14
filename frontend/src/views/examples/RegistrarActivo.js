@@ -28,7 +28,8 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import Header from "components/Headers/Header.js";
+import HeaderBlanco from "components/Headers/HeaderBlanco.js";
+
 import { useNavigate } from "react-router-dom";
 
 // CAMBIO CLAVE: Definimos el componente como una constante
@@ -67,7 +68,7 @@ const RegistrarActivoComponent = ({ addActivo }) => {
 
   return (
     <>
-      <Header />
+      <HeaderBlanco />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>

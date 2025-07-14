@@ -9,16 +9,18 @@ import {
   CardTitle,
   Button,
 } from "reactstrap";
-import Header from "components/Headers/Header.js";
+import HeaderBlanco from "components/Headers/HeaderBlanco.js";
 
 const InventarioHub = () => {
   return (
     <>
-      <Header />
+      <HeaderBlanco />
       <Container className="mt--7" fluid>
         <Row className="justify-content-center">
+          
           <Col lg="10" md="12">
-            <h2 className="mb-4 text-white">Módulo de Gestión de Inventario</h2>
+            <h1 className="display-2 text-white mb-4">Gestión de Inventario</h1>
+
             <Row>
               {/* Card para Inventario General */}
               <Col lg="4" md="6" className="mb-4">

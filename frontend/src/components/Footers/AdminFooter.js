@@ -1,40 +1,23 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.4
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 /*eslint-disable*/
-
 // reactstrap components
-import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import { Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer bg-light p-5">
       <Row className="align-items-center justify-content-xl-between">
         <Col xl="6">
-          <div className="copyright text-center text-xl-left text-muted">
+          <div className="copyright text-center text-xl-left text-default">
             © {new Date().getFullYear()}{" "}
             <a
-              className="font-weight-bold ml-1"
-              href="https://www.creative-tim.com?ref=adr-admin-footer"
-              rel="noopener noreferrer"
+              className="font-weight-bold ml-1 text-default"
+              href="https://www.canal40.com" // Reemplaza por el sitio oficial
               target="_blank"
+              rel="noopener noreferrer"
             >
-              Creative Tim
-            </a>
+              Canal 40
+            </a>{" "}
+            - Todos los derechos reservados
           </div>
         </Col>
 
@@ -42,41 +25,56 @@ const Footer = () => {
           <Nav className="nav-footer justify-content-center justify-content-xl-end">
             <NavItem>
               <NavLink
-                href="https://www.creative-tim.com?ref=adr-admin-footer"
-                rel="noopener noreferrer"
+                href="https://www.facebook.com/profile.php?id=100079642344803"
                 target="_blank"
+                rel="noopener noreferrer"
+                className="text-default"
               >
-                Creative Tim
+                Facebook
               </NavLink>
             </NavItem>
 
             <NavItem>
               <NavLink
-                href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
-                rel="noopener noreferrer"
+                href="https://www.instagram.com/television_comayagua?igsh=amo0YzV2MTRvbW5t"
                 target="_blank"
+                rel="noopener noreferrer"
+                className="text-default"
               >
-                About Us
+                Instagram
               </NavLink>
             </NavItem>
 
             <NavItem>
               <NavLink
-                href="http://blog.creative-tim.com?ref=adr-admin-footer"
-                rel="noopener noreferrer"
+                href="http://www.tiktok.com/@canal40comayagua" // Cambia por tu número real
                 target="_blank"
+                rel="noopener noreferrer"
+                className="text-pdefault"
               >
-                Blog
+                Tiktok
               </NavLink>
             </NavItem>
 
             <NavItem>
               <NavLink
-                href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-admin-footer"
-                rel="noopener noreferrer"
+                href="https://wa.me/50489871034?text=Hola,%20Canal%2040,%20me%20interesa%20sus%20servicios."
                 target="_blank"
+                rel="noopener noreferrer"
+                className="text-default"
               >
-                MIT License
+                Whatsapp
+              </NavLink>
+            </NavItem>
+
+            <NavItem>
+              <NavLink
+                href="https://www.televisioncomayagua.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-default"
+              >
+                Sitio Web
               </NavLink>
             </NavItem>
           </Nav>

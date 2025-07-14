@@ -41,7 +41,8 @@ import {
   Col
 } from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
+import HeaderBlanco from "components/Headers/HeaderBlanco.js";
+
 
 const ListaActivos = ({ inventoryData }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -68,7 +69,7 @@ const ListaActivos = ({ inventoryData }) => {
 
   return (
     <>
-      <Header />
+      <HeaderBlanco />
       {/* Page content */}
       <Container className="mt--7" fluid>
         {/* Filtros de Categorías y Búsqueda */}

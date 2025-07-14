@@ -33,6 +33,7 @@ import HistorialFactura from "views/facturacion/HistorialFactura";
 import Programacion from "views/programacion/programacion";
 
 const routes = [
+  // Dashboard
   {
     path: "/index",
     name: "Dashboard",
@@ -40,8 +41,9 @@ const routes = [
     component: Index,
     layout: "/admin",
   },
+  // Inventario
   {
-    path: "/inventario",
+    path: "/panel-inventario",
     name: "Inventario",
     icon: "ni ni-archive-2 text-blue",
     component: InventarioHub,
@@ -87,6 +89,7 @@ const routes = [
     layout: "/admin",
     hidden: true,
   },
+  // Ejemplos
   {
     path: "/icons",
     name: "Icons",
@@ -129,6 +132,7 @@ const routes = [
     component: Register,
     layout: "/auth",
   },
+  // Facturación
   {
     path: "/facturacion/panel",
     name: "Panel Facturación",
@@ -150,6 +154,7 @@ const routes = [
     component: HistorialFactura,
     layout: "/admin",
   },
+  // Programación
   {
     path: "/programacion",
     name: "Programación",

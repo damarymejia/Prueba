@@ -12,7 +12,8 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import Header from "components/Headers/Header.js";
+import HeaderBlanco from "components/Headers/HeaderBlanco.js";
+
 import { useNavigate } from "react-router-dom";
 
 const GestionarStock = ({ inventoryData, updateStock }) => {
@@ -67,7 +68,7 @@ const GestionarStock = ({ inventoryData, updateStock }) => {
 
   return (
     <>
-      <Header />
+      <HeaderBlanco />
       <Container className="mt--7" fluid>
         <Row>
           <Col className="order-xl-1" xl="12">

@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.4
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
 // reactstrap components
 import {
   Button,
@@ -39,7 +21,7 @@ const Register = () => {
         <Card className="bg-secondary shadow border-0">
           <CardHeader className="bg-transparent pb-5">
             <div className="text-muted text-center mt-2 mb-4">
-              <small>Iniciar Sesion con</small>
+              <small>Registrarse con</small>
             </div>
             <div className="text-center">
               <Button
@@ -51,10 +33,7 @@ const Register = () => {
                 <span className="btn-inner--icon">
                   <img
                     alt="..."
-                    src={
-                      require("../../assets/img/icons/common/github.svg")
-                        .default
-                    }
+                    src={require("../../assets/img/icons/common/github.svg").default}
                   />
                 </span>
                 <span className="btn-inner--text">Github</span>
@@ -68,10 +47,7 @@ const Register = () => {
                 <span className="btn-inner--icon">
                   <img
                     alt="..."
-                    src={
-                      require("../../assets/img/icons/common/google.svg")
-                        .default
-                    }
+                    src={require("../../assets/img/icons/common/google.svg").default}
                   />
                 </span>
                 <span className="btn-inner--text">Google</span>
@@ -80,7 +56,7 @@ const Register = () => {
           </CardHeader>
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
-              <small>Or sign up with credentials</small>
+              <small>O crea una cuenta con tus datos</small>
             </div>
             <Form role="form">
               <FormGroup>
@@ -90,7 +66,7 @@ const Register = () => {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Name" type="text" />
+                  <Input placeholder="Nombre completo" type="text" />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -101,7 +77,7 @@ const Register = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
-                    placeholder="Email"
+                    placeholder="Correo electrónico"
                     type="email"
                     autoComplete="new-email"
                   />
@@ -115,7 +91,7 @@ const Register = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
-                    placeholder="Password"
+                    placeholder="Contraseña"
                     type="password"
                     autoComplete="new-password"
                   />
@@ -123,8 +99,8 @@ const Register = () => {
               </FormGroup>
               <div className="text-muted font-italic">
                 <small>
-                  password strength:{" "}
-                  <span className="text-success font-weight-700">strong</span>
+                  Seguridad de la contraseña:{" "}
+                  <span className="text-success font-weight-700">fuerte</span>
                 </small>
               </div>
               <Row className="my-4">
@@ -140,9 +116,9 @@ const Register = () => {
                       htmlFor="customCheckRegister"
                     >
                       <span className="text-muted">
-                        I agree with the{" "}
+                        Acepto la{" "}
                         <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                          Privacy Policy
+                          Política de Privacidad
                         </a>
                       </span>
                     </label>
@@ -151,7 +127,7 @@ const Register = () => {
               </Row>
               <div className="text-center">
                 <Button className="mt-4" color="primary" type="button">
-                  Create account
+                  Crear cuenta
                 </Button>
               </div>
             </Form>
@@ -163,3 +139,4 @@ const Register = () => {
 };
 
 export default Register;
+
