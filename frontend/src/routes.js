@@ -36,9 +36,16 @@ const routes = [
   // Dashboard
   {
     path: "/index",
-    name: "Dashboard",
+    name: "Panel de Control",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
+    layout: "/admin",
+  },
+    {
+    path: "/user-profile",
+    name: "Perfil de Usuario",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
     layout: "/admin",
   },
   // Inventario
@@ -89,28 +96,50 @@ const routes = [
     layout: "/admin",
     hidden: true,
   },
-  // Ejemplos
+  
+  // Facturación
   {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
+    path: "/facturacion/panel",
+    name: "Facturación",
+    icon: "ni ni-collection text-blue",
+    component: PanelFacturacion,
     layout: "/admin",
   },
   {
-    path: "/maps",
-    name: "Maps",
+    path: "/facturacion/crear",
+    name: "Crear Factura",
+    icon: "ni ni-fat-add text-green",
+    component: CrearFactura,
+    layout: "/admin",
+    hidden: true,
+  },
+  {
+    path: "/facturacion/historial",
+    name: "Historial Facturas",
+    icon: "ni ni-time-alarm text-orange",
+    component: HistorialFactura,
+    layout: "/admin",
+    hidden: true,
+  },
+  // Programación
+  {
+    path: "/programacion",
+    name: "Programación",
+    icon: "ni ni-calendar-grid-58 text-primary",
+    component: Programacion,
+    layout: "/admin",
+  },
+// Mapa
+    {
+    path: "/mapas",
+    name: "Mapa",
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
   },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin",
-  },
+
+  // Ejemplos
+
   {
     path: "/tables",
     name: "Tables",
@@ -118,6 +147,7 @@ const routes = [
     component: Tables,
     layout: "/admin",
   },
+  // Authentication Login/Register
   {
     path: "/login",
     name: "Login",
@@ -131,36 +161,6 @@ const routes = [
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth",
-  },
-  // Facturación
-  {
-    path: "/facturacion/panel",
-    name: "Panel Facturación",
-    icon: "ni ni-collection text-blue",
-    component: PanelFacturacion,
-    layout: "/admin",
-  },
-  {
-    path: "/facturacion/crear",
-    name: "Crear Factura",
-    icon: "ni ni-fat-add text-green",
-    component: CrearFactura,
-    layout: "/admin",
-  },
-  {
-    path: "/facturacion/historial",
-    name: "Historial Facturas",
-    icon: "ni ni-time-alarm text-orange",
-    component: HistorialFactura,
-    layout: "/admin",
-  },
-  // Programación
-  {
-    path: "/programacion",
-    name: "Programación",
-    icon: "ni ni-calendar-grid-58 text-primary",
-    component: Programacion,
-    layout: "/admin",
   },
 ];
 

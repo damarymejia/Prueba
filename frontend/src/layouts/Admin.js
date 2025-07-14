@@ -208,9 +208,9 @@ const Admin = () => {
           brandText={getBrandText(location.pathname)}
         />
         <Routes>{getRoutes(routes)}</Routes>
-        <Container fluid>
+        
           <AdminFooter />
-        </Container>
+        
       </div>
     </>
   );

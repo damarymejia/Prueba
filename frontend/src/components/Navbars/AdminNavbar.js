@@ -1,5 +1,6 @@
 
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // reactstrap components
 import {
   DropdownMenu,
@@ -18,9 +19,12 @@ import {
   Media,
 } from "reactstrap";
 
+
 const AdminNavbar = (props) => {
+  const navigate = useNavigate();
   return (
     <>
+    
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
         <Container fluid>
           <Link
@@ -79,7 +83,10 @@ const AdminNavbar = (props) => {
                   <span>Ayuda</span>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                <DropdownItem
+                
+                  onClick={() => navigate("/auth/login")}
+                >
                   <i className="ni ni-user-run" />
                   <span>Cerrar Sesión</span>
                 </DropdownItem>
