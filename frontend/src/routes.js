@@ -14,7 +14,11 @@ import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
+
+// Reportes
+import Reporte from "views/examples/Reporte.js";
+import VerDetalle from "views/examples/VerDetalle.js";
+import HistoricoReportes from "views/examples/HistoricoReportes.js";
 
 // Inventario
 import ListaActivos from "views/examples/ListaActivos.js";
@@ -41,6 +45,7 @@ const routes = [
     component: Index,
     layout: "/admin",
   },
+  // Perfil de Usuario
     {
     path: "/user-profile",
     name: "Perfil de Usuario",
@@ -129,6 +134,32 @@ const routes = [
     component: Programacion,
     layout: "/admin",
   },
+
+// Reportes
+ {
+    path: "/reporte",
+    name: "Reportes",
+    icon: "ni ni-archive-2 text-primary",
+    component: Reporte,
+    layout: "/admin",
+  },
+  {
+    path: "/detalle/:id",
+    name: "Detalle de Reporte",
+    icon: "ni ni-bullet-list-67 text-info",
+    component: VerDetalle ,
+    layout: "/admin",
+    hidden: true, // Oculto del sidebar
+  },
+  {
+    path: "/historico",
+    name: "Histórico de Reportes",
+    icon: "ni ni-archive-2 text-warning",
+    component: HistoricoReportes ,
+    layout: "/admin",
+    hidden: true,
+  },
+
 // Mapa
     {
     path: "/mapas",
