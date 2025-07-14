@@ -1,19 +1,9 @@
-/*!
-=========================================================
-* Argon Dashboard React - v1.2.4
-=========================================================
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2024 Creative Tim
-* Licensed under MIT
-=========================================================
-*/
 
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
 
 // Reportes
 import Reporte from "views/examples/Reporte.js";
@@ -36,6 +26,9 @@ import HistorialFactura from "views/facturacion/HistorialFactura";
 // Programación
 import Programacion from "views/programacion/programacion";
 
+// Clientes
+import Clientes from "views/examples/Clientes.js";
+
 const routes = [
   // Dashboard
   {
@@ -45,14 +38,17 @@ const routes = [
     component: Index,
     layout: "/admin",
   },
-  // Perfil de Usuario
-    {
-    path: "/user-profile",
-    name: "Perfil de Usuario",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin",
+
+// Clientes
+  {
+  path: "/clientes",
+  name: "Clientes",
+  icon: "ni ni-single-02 text-primary",
+  component: Clientes,
+  layout: "/admin"
   },
+
+
   // Inventario
   {
     path: "/panel-inventario",
@@ -159,7 +155,14 @@ const routes = [
     layout: "/admin",
     hidden: true,
   },
-
+  // Perfil de Usuario
+    {
+    path: "/user-profile",
+    name: "Perfil de Usuario",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/admin",
+  },
 // Mapa
     {
     path: "/mapas",
@@ -169,15 +172,6 @@ const routes = [
     layout: "/admin",
   },
 
-  // Ejemplos
-
-  {
-    path: "/tables",
-    name: "Tables",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Tables,
-    layout: "/admin",
-  },
   // Authentication Login/Register
   {
     path: "/login",

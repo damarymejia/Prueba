@@ -1,21 +1,4 @@
-/*!
 
-=========================================================
-* Argon Dashboard React - v1.2.4
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-/*eslint-disable*/
 import { useState } from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 // nodejs library to set properties for components
@@ -181,22 +164,14 @@ const Sidebar = (props) => {
           {/* Divider */}
           <hr className="my-3" />
           {/* Heading */}
-          <h6 className="navbar-heading text-muted">Documentation</h6>
+          <h6 className="navbar-heading text-muted">Configuraciones</h6>
           {/* Navigation */}
           <Nav className="mb-md-3">
-            <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-sidebar">
-                <i className="ni ni-spaceship" />
-                Getting started
+            <NavItem> 
+              <NavLink to="http://localhost:3000/admin/user-profile" tag={NavLinkRRD}>
+                <i className="ni ni-single-02" />
+                Perfil de Usuario
               </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-sidebar">
-                <i className="ni ni-palette" />
-                Foundation
-              </NavLink>
-            </NavItem>
-            <NavItem>
               <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/alerts?ref=adr-sidebar">
                 <i className="ni ni-ui-04" />
                 Components
