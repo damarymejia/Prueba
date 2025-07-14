@@ -25,6 +25,8 @@ import HistorialFactura from "views/facturacion/HistorialFactura";
 
 // Programación
 import Programacion from "views/programacion/programacion";
+import CrearPrograma from "views/programacion/CrearPrograma.js";
+import CrearPauta from "views/programacion/CrearPauta.js";
 
 // Clientes
 import Clientes from "views/examples/Clientes.js";
@@ -129,6 +131,22 @@ const routes = [
     icon: "ni ni-calendar-grid-58 text-primary",
     component: Programacion,
     layout: "/admin",
+  },
+  {
+    path: "/crear-programa",
+    name: "Crear Programa",
+    icon: "ni ni-fat-add text-primary",
+    component: CrearPrograma,
+    layout: "/admin",
+    hidden: true,
+  },
+  {
+    path: "/crear-pauta",
+    name: "Crear Pauta Publicitaria",
+    icon: "ni ni-bullet-list-67 text-green",
+    component: CrearPauta,
+    layout: "/admin",
+    hidden: true,
   },
 
 // Reportes
