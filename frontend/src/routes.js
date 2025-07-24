@@ -1,9 +1,28 @@
 
+// Gestion Clientes
+import Clientes from "views/gestion_cliente/Clientes.js";
+
 import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
+// seguridad
+import Profile from "views/seguridad/Profile.js";
+import Register from "views/seguridad/Register.js";
+import Login from "views/seguridad/Login.js";
+// Mapa
 import Maps from "views/examples/Maps.js";
-import Register from "views/examples/Register.js";
-import Login from "views/examples/Login.js";
+
+// Facturación
+import PanelFacturacion from "views/facturacion/PanelFacturacion";
+import CrearFactura from "views/facturacion/CrearFactura";
+import HistorialFactura from "views/facturacion/HistorialFactura";
+import Factura from "views/facturacion/Factura";
+import RegistrarPago from "views/facturacion/RegistrarPago";
+import CAI from "views/facturacion/Cai";
+import Contratos from "views/facturacion/Contratos";
+import Canjes from "views/facturacion/Canjes";
+// Facturación - Crear Factura
+import CrearFacturaNueva from "views/facturacion/CrearFacturaNueva";
+import ListaFacturas from "views/facturacion/ListasFacturas.js";
+
 
 // Reportes
 import Reporte from "views/examples/Reporte.js";
@@ -18,25 +37,17 @@ import GestionarMantenimiento from "views/examples/GestionarMantenimiento.js";
 import GenerarReportes from "views/examples/GenerarReportes.js";
 import InventarioHub from "views/examples/InventarioHub.js";
 
-// Facturación
-import PanelFacturacion from "views/facturacion/PanelFacturacion";
-import CrearFactura from "views/facturacion/CrearFactura";
-import HistorialFactura from "views/facturacion/HistorialFactura";
-import Factura from "views/facturacion/Factura";
-import RegistrarPago from "views/facturacion/RegistrarPago";
-import CAI from "views/facturacion/Cai";
-import Contratos from "views/facturacion/Contratos";
-import Canjes from "views/facturacion/Canjes";
-
 // Programación
 import Programacion from "views/programacion/programacion";
 import CrearPrograma from "views/programacion/CrearPrograma.js";
 import CrearPauta from "views/programacion/CrearPauta.js";
 
-// Clientes
-import Clientes from "views/examples/Clientes.js";
+
+
 
 const routes = [
+
+ 
   // Dashboard
   {
     path: "/index",
@@ -104,6 +115,7 @@ const routes = [
     layout: "/admin",
     hidden: true,
   },
+
   
   // Facturación
   {
@@ -113,6 +125,20 @@ const routes = [
     component: PanelFacturacion,
     layout: "/admin",
   },
+  {  
+    path: "/crear-factura-nueva",  
+    name: "Nueva Factura",  
+    icon: "ni ni-fat-add text-green",  
+    component: CrearFacturaNueva,  
+    layout: "/admin",  
+  },
+  {  
+    path: "/facturas",  
+    name: "Facturas",  
+    icon: "ni ni-single-copy-04 text-pink",  
+    component: ListaFacturas,  
+    layout: "/admin",  
+  }, 
   {
     path: "/facturacion/crear",
     name: "Crear Factura",
@@ -169,7 +195,7 @@ const routes = [
     layout: "/admin",
     hidden: true,
   },
-  // Programación
+// Programación
   {
     path: "/programacion",
     name: "Programación",
@@ -218,6 +244,7 @@ const routes = [
     layout: "/admin",
     hidden: true,
   },
+
   // Perfil de Usuario
     {
     path: "/user-profile",
