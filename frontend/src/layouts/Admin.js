@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Route, Routes, Navigate } from "react-router-dom";
-// reactstrap components
+// reactstrap component
 import { Container } from "reactstrap";
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
