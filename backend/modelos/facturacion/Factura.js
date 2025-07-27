@@ -10,10 +10,6 @@ const Factura = db.define('Factura', {
     primaryKey: true,
     allowNull: true
   },
-  Fecha: {
-    type: DataTypes.DATE,
-    allowNull: true
-  },
   Total_Facturado: {
     type: DataTypes.DOUBLE,
     allowNull: true
