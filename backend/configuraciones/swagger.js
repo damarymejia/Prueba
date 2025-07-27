@@ -5,9 +5,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API-Optica',
+      title: 'API-Canal 40',
       version: '1.0.0',
-      description: 'API del sistemas expertos',
+      description: 'API Sistema de Información de Canal 40',
       contact: {
         email: 'ajgamez02@gmail.com'
       },

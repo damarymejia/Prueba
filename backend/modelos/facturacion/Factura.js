@@ -10,6 +10,10 @@ const Factura = db.define('Factura', {
     primaryKey: true,
     allowNull: true
   },
+  Fecha: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
   Total_Facturado: {
     type: DataTypes.DOUBLE,
     allowNull: true
@@ -18,6 +22,49 @@ const Factura = db.define('Factura', {
     type: DataTypes.STRING(45),
     allowNull: true
   },
+// Nuevos campos específicos para TV  
+ 
+  productoCliente: {  
+    type: DataTypes.STRING(100),  
+    allowNull: true  
+  },  
+  mencion: {  
+    type: DataTypes.STRING(100),  
+    allowNull: true  
+  },  
+  periodoInicio: {  
+    type: DataTypes.DATE,  
+    allowNull: true  
+  },  
+  periodoFin: {  
+    type: DataTypes.DATE,  
+    allowNull: true  
+  },  
+  tipoServicio: {  
+    type: DataTypes.ENUM('spot', 'programa', 'contrato'),  
+    allowNull: true  
+  },  
+  agencia: {  
+    type: DataTypes.STRING(100),  
+    allowNull: true  
+  },
+  ordenNo: {  
+    type: DataTypes.INTEGER, 
+    allowNull: true
+  },
+  ordenCompraExenta: {  
+    type: DataTypes.STRING(50),  
+    allowNull: true  
+  },  
+  numeroRegistroSAG: {  
+    type: DataTypes.STRING(50),  
+    allowNull: true  
+  },  
+  constanciaExonerado: {  
+    type: DataTypes.STRING(50),  
+    allowNull: true  
+  }, 
+
   idCliente: {
     type: DataTypes.INTEGER,
     allowNull: false
@@ -34,9 +81,10 @@ const Factura = db.define('Factura', {
     type: DataTypes.STRING,
     allowNull: true
   },
-  estadoFactura: {
-  type: DataTypes.STRING,
-  defaultValue: 'activa' // o 'anulada'
+  estadoFactura: {  
+    type: DataTypes.ENUM('activa', 'anulada', 'cobrada', 'pendiente'),  
+    defaultValue: 'activa'  
+
 },
 }, {
   tableName: 'factura',

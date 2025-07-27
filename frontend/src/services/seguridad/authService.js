@@ -13,7 +13,7 @@ export const authService = {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          nombre_usuario: credentials.nombre_usuario, // Asegurar minúsculas y coincidencia con backend
+          Nombre_Usuario: credentials.Nombre_Usuario, // Asegurar minúsculas y coincidencia con backend
           contraseña: credentials.contraseña
         })
       });
@@ -29,7 +29,7 @@ export const authService = {
         localStorage.setItem('token', data.token);
         localStorage.setItem('usuario', JSON.stringify({
           idUsuario: data.idUsuario,
-          nombre_usuario: credentials.nombre_usuario,
+          Nombre_Usuario: credentials.Nombre_Usuario,
           rol: data.rol // Asumiendo que el backend devuelve el rol
         }));
       }

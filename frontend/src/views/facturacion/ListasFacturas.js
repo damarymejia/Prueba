@@ -161,8 +161,13 @@ const ListaFacturas = () => {
                           </td>  
                           <td>  
                             <span className="mb-0 text-sm">  
-                              {factura.Cliente?.nombre || 'Cliente no disponible'}  
-                            </span>  
+                                                      
+
+                            {factura.Cliente?.persona ?   
+                            `${factura.Cliente.persona.Pnombre} ${factura.Cliente.persona.Snombre || ''} ${factura.Cliente.persona.Papellido} ${factura.Cliente.persona.Sapellido || ''}`.trim() :   
+                            'Cliente no disponible'  
+                           }
+                          </span> 
                           </td>  
                           <td>  
                             <span className="mb-0 text-sm font-weight-bold">  

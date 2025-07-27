@@ -2,14 +2,14 @@ const Factura = require('../../modelos/facturacion/Factura');
 const db = require('../../configuraciones/db');
 const FacturaDetalle = require('../../modelos/facturacion/FacturaDetalle');
 const DetalleDescuento = require('../../modelos/facturacion/DetalleDescuento');
-const Cliente = require('../../modelos/gestion_cliente/Cliente');  
+const Cliente = require('../../modelos/gestion_cliente/Cliente');
+const CAI = require('../../modelos/facturacion/Cai'); 
 const PDFDocument = require('pdfkit');
 const path = require('path');
 const fs = require('fs');
 
 const Empleado = require('../../modelos/gestion_cliente/Empleado');  
 const Persona = require('../../modelos/seguridad/Persona');  
-
 
 //validaciones
 const { body, validationResult } = require('express-validator');
@@ -99,7 +99,15 @@ exports.crearFactura = async (req, res) => {
 // Obtener todas las facturas
 exports.obtenerFacturas = async (req, res) => {
   try {
-    const facturas = await Factura.findAll();
+    const facturas = await Factura.findAll({  
+      include: [{  
+        model: Cliente,  
+        include: [{  
+          model: Persona,  
+          as: 'persona'  
+        }]  
+      }]  
+    });  
     res.json({ facturas });
   } catch (error) {
     console.error(error);
@@ -165,159 +173,292 @@ const formatearNumero = new Intl.NumberFormat('es-HN', {
 });    
     
 // ------------------------------------------------------------------------------------------    
-// Crear una factura completa (con detalles y descuentos)    
-exports.crearFacturaCompleta = async (req, res) => {      
-  const t = await db.transaction();      
+// Función para convertir números a letras (agregar al inicio del archivo)  
+function convertirNumeroALetras(numero) {  
+  const unidades = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];  
+  const decenas = ['', '', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];  
+  const especiales = ['diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve'];  
+  const centenas = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];  
+  
+  if (numero === 0) return 'cero lempiras exactos';  
+  if (numero === 1) return 'un lempira exacto';  
+  
+  let entero = Math.floor(numero);  
+  let decimal = Math.round((numero - entero) * 100);  
+  
+  function convertirGrupo(num) {  
+    if (num === 0) return '';  
+    if (num === 100) return 'cien';  
       
-  try {      
-    let { factura, detalles, descuentos } = req.body;      
-      
-    // Si no vienen descuentos, asignar uno por defecto para evitar error "no iterable"      
-    descuentos = descuentos && descuentos.length > 0      
-      ? descuentos      
-      : [{ idDescuento: 0, monto: 0 }];      
-    
-    // 1. Crear factura con fecha automática  
-    if (!factura.Fecha) {  
-      factura.Fecha = new Date();  
+    let resultado = '';  
+    let c = Math.floor(num / 100);  
+    let d = Math.floor((num % 100) / 10);  
+    let u = num % 10;  
+  
+    if (c > 0) resultado += centenas[c];  
+    if (d === 1 && u > 0) {  
+      resultado += (resultado ? ' ' : '') + especiales[u];  
+    } else {  
+      if (d > 0) {  
+        if (d === 2 && u > 0) {  
+          resultado += (resultado ? ' ' : '') + 'veinti' + unidades[u];  
+        } else {  
+          resultado += (resultado ? ' ' : '') + decenas[d];  
+          if (u > 0) resultado += ' y ' + unidades[u];  
+        }  
+      } else if (u > 0) {  
+        resultado += (resultado ? ' ' : '') + unidades[u];  
+      }  
     }  
-    const nuevaFactura = await Factura.create(factura, { transaction: t });
-      
-    // 2. Agregar ID de factura a cada detalle (sin validar idProductoAtributo)  
-    for (let d of detalles) {    
-      d.idFactura = nuevaFactura.idFactura;    
-    }    
+    return resultado;  
+  }  
+  
+  let resultado = '';  
+    
+  if (entero >= 1000000) {  
+    let millones = Math.floor(entero / 1000000);  
+    resultado += millones === 1 ? 'un millón' : convertirGrupo(millones) + ' millones';  
+    entero %= 1000000;  
+  }  
+  
+  if (entero >= 1000) {  
+    let miles = Math.floor(entero / 1000);  
+    resultado += (resultado ? ' ' : '') + (miles === 1 ? 'mil' : convertirGrupo(miles) + ' mil');  
+    entero %= 1000;  
+  }  
+  
+  if (entero > 0) {  
+    resultado += (resultado ? ' ' : '') + convertirGrupo(entero);  
+  }  
+  
+  resultado += entero === 1 ? ' lempira' : ' lempiras';  
+    
+  if (decimal > 0) {  
+    resultado += ' con ' + convertirGrupo(decimal) + (decimal === 1 ? ' centavo' : ' centavos');  
+  } else {  
+    resultado += ' exactos';  
+  }  
+  
+  return resultado.charAt(0).toUpperCase() + resultado.slice(1);  
+}  
+  
+exports.crearFacturaCompleta = async (req, res) => {        
+  const t = await db.transaction();        
         
-    // 3. Crear detalles    
-    await FacturaDetalle.bulkCreate(detalles, { transaction: t });      
+  try {        
+    let { factura, detalles, descuentos } = req.body;        
+        
+    descuentos = descuentos && descuentos.length > 0        
+      ? descuentos        
+      : [{ idDescuento: 0, monto: 0 }];        
       
-    // 4. Agregar ID de factura a cada descuento      
-    for (let d of descuentos) {      
+    if (!factura.Fecha) {    
+      factura.Fecha = new Date();    
+    }    
+    const nuevaFactura = await Factura.create(factura, { transaction: t });  
+        
+    for (let d of detalles) {      
       d.idFactura = nuevaFactura.idFactura;      
     }      
+    await FacturaDetalle.bulkCreate(detalles, { transaction: t });        
+        
+    for (let d of descuentos) {        
+      d.idFactura = nuevaFactura.idFactura;        
+    }        
+    await DetalleDescuento.bulkCreate(descuentos, { transaction: t });        
+        
+    // Obtener datos completos  
+    const cliente = await Cliente.findByPk(nuevaFactura.idCliente, {        
+      include: [{ model: Persona, as: 'persona' }]        
+    });        
+        
+    const empleado = await Empleado.findByPk(nuevaFactura.idEmpleado, {        
+      include: [{ model: Persona, as: 'persona' }]        
+    });        
+  
+    const caiActivo = await CAI.findOne({     
+      where: { activo: true },    
+      order: [['fechaEmision', 'DESC']]    
+    });    
+        
+    if (!caiActivo) {    
+      throw new Error('No hay CAI activo configurado');    
+    }  
+        
+    const ProductoModel = require('../../modelos/productos/ProductoModel');          
+    const detallesConProductos = await Promise.all(            
+      detalles.map(async (detalle) => {            
+        const producto = await ProductoModel.findByPk(detalle.idProducto);          
+        return { ...detalle, producto: producto };            
+      })            
+    );     
+    // ------------------------------------------------------------------------------------------------------------    
+    // --- Generar PDF corregido para Canal 40 ---        
+    const nombreArchivo = `factura_${nuevaFactura.idFactura}.pdf`;        
+    const rutaPDF = path.join(__dirname, '../../uploads', nombreArchivo);        
+        
+    const doc = new PDFDocument({ margin: 50 });          
+    doc.pipe(fs.createWriteStream(rutaPDF));          
       
-    // 5. Crear descuentos      
-    await DetalleDescuento.bulkCreate(descuentos, { transaction: t });      
+    // LOGO DEL CANAL (lado izquierdo)  
+    const logoPath = path.join(__dirname, '../../img/logoCanal.png');  
+    if (fs.existsSync(logoPath)) {  
+      doc.image(logoPath, 50, 50, { width: 100, height: 60 });  
+    }  
+    else {  
+      console.log('Logo no encontrado en la ruta especificada');  
+    }
       
-    // -- OBTENER DATOS COMPLETOS DE LA BASE DE DATOS ---      
-          
-    // Obtener cliente con sus datos de persona      
-    const cliente = await Cliente.findByPk(nuevaFactura.idCliente, {      
-      include: [{      
-        model: Persona,      
-        as: 'persona'      
-      }]      
-    });      
+    // ENCABEZADO DE LA EMPRESA (centrado, al lado del logo)  
+    doc.fontSize(16).font('Helvetica-Bold')  
+      .text('TELEVISIÓN COMAYAGUA - CANAL 40', 120, 55);  
       
-    // Obtener empleado con sus datos de persona      
-    const empleado = await Empleado.findByPk(nuevaFactura.idEmpleado, {      
-      include: [{      
-        model: Persona,      
-        as: 'persona'     
-      }]      
-    });      
+    doc.fontSize(10).font('Helvetica')  
+      .text('COLONIA SAN MIGUEL N°2, BOULEVARD DEL SUR', 120, 75)  
+      .text('CONTIGUO A RESTAURANTE LO DE KERPO,', 120, 88)  
+      .text('COMAYAGUA, COMAYAGUA, HONDURAS, C.A.', 120, 101)  
+      .text('Tel: 2772-7427 / 2770-6810 Fax: 2772-6810 Cel: 9957-4580', 120, 114)  
+      .text('Propietario: José Dolores Gámez Suazo', 120, 127)  
+      .text(`RTN: ${caiActivo.rtnEmpresa}`, 120, 140)  
+      .text('E-mail: televisioncomayagua@yahoo.com', 120, 153);  
+  
+    // Línea separadora          
+    doc.moveTo(50, 170).lineTo(550, 170).stroke();          
+    doc.moveDown(2);          
+              
+    // TÍTULO FACTURA          
+    doc.fontSize(18).font('Helvetica-Bold')          
+      .text('FACTURA', { align: 'center' });  
       
-    // Obtener productos directamente del modelo ProductoModel  
-    const ProductoModel = require('../../modelos/productos/ProductoModel');        
-    const detallesConProductos = await Promise.all(          
-      detalles.map(async (detalle) => {          
-        const producto = await ProductoModel.findByPk(detalle.idProducto);        
-        return {          
-          ...detalle,          
-          producto: producto      
-        };          
-      })          
-    );   
-      
-    // --- Generar PDF de la factura ---      
-    const nombreArchivo = `factura_${nuevaFactura.idFactura}.pdf`;      
-    const rutaPDF = path.join(__dirname, '../../uploads', nombreArchivo);      
-      
-    const doc = new PDFDocument({ margin: 50 });        
-    doc.pipe(fs.createWriteStream(rutaPDF));        
+    // Tipo de factura  
+    doc.fontSize(12).font('Helvetica')  
+      .text('Contado', { align: 'center' });  
+    doc.moveDown();          
+              
+    // INFORMACIÓN DE LA FACTURA (Lado izquierdo)        
+    const facturaY = doc.y;        
+    doc.fontSize(10).font('Helvetica-Bold')        
+      .text('Factura No:', 50, facturaY)        
+      .font('Helvetica')        
+      .text(`000-001-01-000-${nuevaFactura.idFactura.toString().padStart(5, '0')}`, 130, facturaY);        
             
-    // ENCABEZADO DE LA EMPRESA        
-    doc.fontSize(16).font('Helvetica-Bold')      
-      .text('ÓPTICA Velazques', { align: 'center' });      
-    doc.fontSize(10).font('Helvetica')      
-      .text('RTN: 0301201505686', { align: 'center' })      
-      .text('CAI: ACD2155QWJJ254254', { align: 'center' })      
-      .text('RANGO AUTORIZADO: Del 00000001 al 99999999', { align: 'center' })      
-      .text('Dirección: Barrio Abajo, Comayagua, Honduras', { align: 'center' })      
-      .text('Teléfono: 88277998 | Email: opticavelazques@gmail.com', { align: 'center' });      
-          
-    // Línea separadora        
-    doc.moveTo(50, doc.y + 10).lineTo(550, doc.y + 10).stroke();        
-    doc.moveDown(2);        
+    doc.font('Helvetica-Bold')        
+      .text('CAI:', 50, facturaY + 15)        
+      .font('Helvetica')        
+      .text(caiActivo.codigoCAI, 130, facturaY + 15);        
             
-    // TÍTULO FACTURA        
-    doc.fontSize(18).font('Helvetica-Bold')        
-      .text('FACTURA', { align: 'center' });        
-    doc.moveDown();        
+    doc.font('Helvetica-Bold')        
+      .text('Fecha de emisión:', 50, facturaY + 30)        
+      .font('Helvetica')        
+      .text(new Date(nuevaFactura.Fecha).toLocaleDateString('es-HN'), 130, facturaY + 30);        
             
-    // INFORMACIÓN DE LA FACTURA (Lado izquierdo) - MEJORADA      
-    const facturaY = doc.y;      
-    doc.fontSize(10).font('Helvetica-Bold')      
-      .text('FACTURA No:', 50, facturaY)      
-      .font('Helvetica')      
-      .text(nuevaFactura.idFactura.toString().padStart(8, '0'), 130, facturaY);      
-          
-    doc.font('Helvetica-Bold')      
-      .text('FECHA EMISIÓN:', 50, facturaY + 15)      
-      .font('Helvetica')      
-      .text(new Date(nuevaFactura.Fecha).toLocaleDateString('es-HN'), 130, facturaY + 15);      
-          
-    doc.font('Helvetica-Bold')      
-      .text('TIPO DOC:', 50, facturaY + 30)      
-      .font('Helvetica')      
-      .text(nuevaFactura.Tipo_documento || 'FACTURA', 130, facturaY + 30);      
-          
-    // FECHA DE VENCIMIENTO DEL CAI      
-    doc.font('Helvetica-Bold')      
-      .text('VENCE CAI:', 50, facturaY + 45)      
-      .font('Helvetica')      
-      .text('31/12/2025', 130, facturaY + 45);      
-          
-    // DATOS DEL EMPLEADO (Lado izquierdo, debajo de info factura)      
-    const empleadoPersona = empleado?.persona;      
-    const nombreEmpleado = empleadoPersona ?       
-      `${empleadoPersona.Pnombre} ${empleadoPersona.Snombre || ''} ${empleadoPersona.Papellido} ${empleadoPersona.Sapellido || ''}`.trim() : 'N/A';      
-          
-    doc.font('Helvetica-Bold')      
-      .text('ATENDIDO POR:', 50, facturaY + 65)      
-      .font('Helvetica')      
-      .text(nombreEmpleado, 130, facturaY + 65);      
-          
-    // DATOS DEL CLIENTE (Lado derecho) - MEJORADOS      
-    const clientePersona = cliente?.persona;      
-    const nombreCliente = clientePersona ?       
-      `${clientePersona.Pnombre} ${clientePersona.Snombre || ''} ${clientePersona.Papellido} ${clientePersona.Sapellido || ''}`.trim() : 'N/A';      
-          
-    doc.font('Helvetica-Bold')      
-      .text('CLIENTE:', 300, facturaY)      
-      .font('Helvetica')      
-      .text(nombreCliente, 350, facturaY);      
-          
-    // RTN DEL CLIENTE (SI APLICA)      
-    const rtnCliente = clientePersona?.DNI;      
-    const tieneRTN = rtnCliente && rtnCliente.length >= 13;      
-          
-    doc.font('Helvetica-Bold')      
-      .text(tieneRTN ? 'RTN:' : 'ID:', 300, facturaY + 15)      
-      .font('Helvetica')      
-      .text(rtnCliente || 'N/A', 350, facturaY + 15);      
-          
-    doc.font('Helvetica-Bold')      
-      .text('DIRECCIÓN:', 300, facturaY + 30)      
-      .font('Helvetica')      
-      .text(clientePersona ? (clientePersona.Direccion || 'N/A') : 'N/A', 350, facturaY + 30);      
-          
-    doc.font('Helvetica-Bold')      
-      .text('EMAIL:', 300, facturaY + 45)      
-      .font('Helvetica')      
-      .text(clientePersona ? (clientePersona.correo || 'N/A') : 'N/A', 350, facturaY + 45);      
-          
-    doc.moveDown(6);        
+    // DATOS DEL EMPLEADO        
+    const empleadoPersona = empleado?.persona;        
+    const nombreEmpleado = empleadoPersona ?         
+      `${empleadoPersona.Pnombre} ${empleadoPersona.Snombre || ''} ${empleadoPersona.Papellido} ${empleadoPersona.Sapellido || ''}`.trim() : 'N/A';        
+            
+    doc.font('Helvetica-Bold')        
+      .text('Atendido por:', 50, facturaY + 45)        
+      .font('Helvetica')        
+      .text(nombreEmpleado, 130, facturaY + 45);        
+            
+    // DATOS DEL CLIENTE (Lado derecho) - MEJORADOS        
+    const clientePersona = cliente?.persona;        
+    const nombreCliente = clientePersona ?         
+      `${clientePersona.Pnombre} ${clientePersona.Snombre || ''} ${clientePersona.Papellido} ${clientePersona.Sapellido || ''}`.trim() : 'N/A';        
+            
+    doc.font('Helvetica-Bold')        
+      .text('Cliente:', 300, facturaY)        
+      .font('Helvetica')        
+      .text(nombreCliente, 350, facturaY);        
+            
+    // RTN DEL CLIENTE        
+    const rtnCliente = clientePersona?.DNI;        
+    const tieneRTN = rtnCliente && rtnCliente.length >= 13;        
+            
+    doc.font('Helvetica-Bold')        
+      .text('RTN:', 300, facturaY + 15)        
+      .font('Helvetica')        
+      .text(rtnCliente || 'N/A', 350, facturaY + 15);        
+      
+    // CAMPOS ESPECÍFICOS PARA TV - TODOS LOS CAMPOS INCLUIDOS  
+    let currentYY = facturaY + 30;    
+      
+    // Agencia/Nombre Comercial (SIEMPRE mostrar)  
+    doc.font('Helvetica-Bold')    
+      .text('Agencia:', 300, currentYY)    
+      .font('Helvetica')    
+      .text(nuevaFactura.agencia || 'N/A', 400, currentYY);    
+    currentYY += 15;    
+      
+    // Producto del Cliente (SIEMPRE mostrar)  
+    doc.font('Helvetica-Bold')    
+      .text('Producto Cliente:', 300, currentYY)    
+      .font('Helvetica')    
+      .text(nuevaFactura.productoCliente || 'N/A', 400, currentYY);    
+    currentYY += 15;    
+      
+    // Mención (SIEMPRE mostrar)  
+    doc.font('Helvetica-Bold')    
+      .text('Mención:', 300, currentYY)    
+      .font('Helvetica')    
+      .text(nuevaFactura.mencion || 'N/A', 400, currentYY);    
+    currentYY += 15;    
+      
+    // Tipo de Servicio (SIEMPRE mostrar)  
+    doc.font('Helvetica-Bold')    
+      .text('Tipo Servicio:', 300, currentYY)    
+      .font('Helvetica')    
+      .text(nuevaFactura.tipoServicio || 'N/A', 400, currentYY);    
+    currentYY += 15;    
+      
+    // Período (SIEMPRE mostrar)  
+    let periodoTexto = 'N/A';  
+    if (nuevaFactura.periodoInicio && nuevaFactura.periodoFin) {    
+      periodoTexto = `Del ${new Date(nuevaFactura.periodoInicio).toLocaleDateString('es-HN')} al ${new Date(nuevaFactura.periodoFin).toLocaleDateString('es-HN')}`;    
+    } else if (nuevaFactura.periodoInicio) {  
+      periodoTexto = `Desde: ${new Date(nuevaFactura.periodoInicio).toLocaleDateString('es-HN')}`;  
+    } else if (nuevaFactura.periodoFin) {  
+      periodoTexto = `Hasta: ${new Date(nuevaFactura.periodoFin).toLocaleDateString('es-HN')}`;  
+    }  
+      
+    doc.font('Helvetica-Bold')    
+      .text('Período:', 300, currentYY)    
+      .font('Helvetica')    
+      .text(periodoTexto, 400, currentYY);    
+    currentYY += 15;    
+      
+    // Orden No (SIEMPRE mostrar)  
+    doc.font('Helvetica-Bold')    
+      .text('Orden No:', 300, currentYY)    
+      .font('Helvetica')    
+      .text(nuevaFactura.ordenNo || 'N/A', 400, currentYY);    
+    currentYY += 15;    
+      
+    // SECCIÓN DE DATOS DE EXONERACIÓN - SIEMPRE MOSTRAR  
+    doc.moveDown(2);    
+    doc.fontSize(9).font('Helvetica-Bold')    
+      .text('DATOS ADQUIRIDOS EXONERADOS:', 50, doc.y);    
+      
+    let exoneracionY = doc.y + 15;  
+  
+    // Todos los datos de exoneración en una sola línea  
+    const datosExoneracion = [  
+      `Orden Compra Exenta: ${nuevaFactura.ordenCompraExenta || 'N/A'}`,  
+      `No. Registro SAG: ${nuevaFactura.numeroRegistroSAG || 'N/A'}`,  
+      `Constancia Exonerado: ${nuevaFactura.constanciaExonerado || 'N/A'}`  
+    ].join(' | ');  
+      
+    doc.font('Helvetica')  
+      .fontSize(8)  
+      .text(datosExoneracion, 50, exoneracionY, { width: 500 });  
+      
+    exoneracionY += 15;
+      
+    // Ajustar posición para continuar con el resto del PDF  
+    doc.y = exoneracionY + 10;    
+              
+    doc.moveDown(4);       
             
     // TABLA DE PRODUCTOS/SERVICIOS        
     const tableTop = doc.y;        
@@ -410,27 +551,33 @@ exports.crearFacturaCompleta = async (req, res) => {
     nuevaFactura.Total_Facturado = totalFinal;    
     await nuevaFactura.save({ transaction: t });  
       
-    // INFORMACIÓN LEGAL COMPLETA - SAR        
-    const legalY = totalDescuentos > 0 ? totalsY + 80 : totalsY + 65;
-
-    doc.fontSize(8).font('Helvetica')  
-      .text('Esta factura es válida por 30 días', 50, legalY)  
-      .text('Resolución SAR No. 45145', 50, legalY + 15)  
-      .text('CAI: ACD2155QWJJ254254', 50, legalY + 30)  
-      .text('Rango Autorizado: Del 00000001 al 99999999', 50, legalY + 45)  
-      .text('Fecha límite de emisión: 31/12/2025', 50, legalY + 60)  
-      .text('Autorización 54120', 50, legalY + 75);     
-        
-    // LEYENDA TERRITORIAL OBLIGATORIA  
-    doc.fontSize(9).font('Helvetica-Bold')  
-      .text('Este documento es válido en todo el territorio nacional', 50, legalY + 95);  
+    // INFORMACIÓN LEGAL COMPLETA - SAR usando datos del CAI activo  
+    const legalY = totalDescuentos > 0 ? totalsY + 80 : totalsY + 65;  
       
-    // FIRMA Y EMPLEADO  
-    doc.text('_________________________', 400, legalY + 20);  
-    doc.text('Firma y Sello', 430, legalY + 35);  
-    doc.fontSize(7).text(`Atendido por: ${nombreEmpleado}`, 400, legalY + 50); 
+    doc.fontSize(8).font('Helvetica')    
+      .text('Esta factura es válida por 30 días', 50, legalY)    
+      .text(`Resolución ${caiActivo.resolucionSAR}`, 50, legalY + 15)    
+      .text(`CAI: ${caiActivo.codigoCAI}`, 50, legalY + 30)    
+      .text(`Rango Autorizado: Del ${caiActivo.numeroFacturaInicio} al ${caiActivo.numeroFacturaFin}`, 50, legalY + 45)    
+      .text(`Fecha límite de emisión: ${new Date(caiActivo.fechaVencimiento).toLocaleDateString('es-HN')}`, 50, legalY + 60)    
+      .text('Original: Cliente / Copia: Obligación Tributaria', 50, legalY + 75);       
+          
+    // LEYENDA TERRITORIAL OBLIGATORIA    
+    doc.fontSize(9).font('Helvetica-Bold')    
+      .text('Este documento es válido en todo el territorio nacional', 50, legalY + 95);    
+      
+    // Agregar cantidad en letras (función que necesitarás implementar)  
+    const totalEnLetras = convertirNumeroALetras(totalFinal);  
+    doc.fontSize(8).font('Helvetica')  
+      .text(`Cantidad en letras: ${totalEnLetras}`, 50, legalY + 110);  
         
-    doc.end();  
+    // FIRMA Y EMPLEADO    
+    doc.text('_________________________', 400, legalY + 20);    
+    doc.text('Firma Autorizada:', 430, legalY + 35);    
+    doc.fontSize(7).text(`Atendido por: ${nombreEmpleado}`, 400, legalY + 50);   
+      
+    doc.end();
+        
   
     // Guardar el nombre del archivo PDF en la factura  
     nuevaFactura.archivo_pdf = nombreArchivo;  

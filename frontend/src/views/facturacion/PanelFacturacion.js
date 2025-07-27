@@ -69,82 +69,46 @@ const PanelFacturacion = () => {
     <>
       <HeaderResponsive />
       <Container className="mt-4">
-      {/* ACCIONES DEL MÓDULO DE FACTURACIÓN */}
-        <Row className="mb-4">
-          <Col md="3" className="mb-4">
-            <Card className="shadow border-0 h-70">
-              <CardBody >
-                <i className="ni ni-fat-add mr-2 text-primary" />
-                <Button color="primary" href="/admin/facturacion/crear">
-                  Ir a Crear Factura
-                </Button>
-              </CardBody>
-            </Card>
-          </Col>
-
-
-        <Col md="3" className="mb-4">
-          <Card className="shadow border-0 h-70">
-            <CardBody>
-               <i className="ni ni-credit-card mr-2 text-info" />
-
-              <Button color="info" href="/admin/facturacion/pagos">
-                Registrar Pago
-              </Button>
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col md="3" className="mb-4">
-          <Card className="shadow border-0 h-70">
-            <CardBody>
-               <i className="ni ni-folder-17 mr-2 text-success" />
-
-              <Button color="success" href="/admin/facturacion/contratos">
-                Ver Contratos
-              </Button>
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col md="3" className="mb-4">
-          <Card className="shadow border-0 h-100">
-            <CardBody>
-
-                <i className="ni ni-delivery-fast mr-2 text-warning" />
-
-              <Button color="warning" href="/admin/facturacion/canjes">
-                Gestionar Canjes
-              </Button>
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col md="3" className="mb-4">
-          <Card className="shadow border-0 h-70">
-            <CardBody>
-
-                <i className="ni ni-tag mr-2 text-default" />
-
-              <Button color="default" href="/admin/facturacion/cai">
-                Administrar CAI
-              </Button>
-            </CardBody>
-          </Card>
-        </Col>
-
-        <Col md="3" className="mb-4">
-          <Card className="shadow border-0 h-70">
-            <CardBody>
-
-                <i className="ni ni-archive-2 mr-2 text-danger" />
-
-              <Button color="danger" href="/admin/facturacion/historial">
-                Ver Historial
-              </Button>
-            </CardBody>
-          </Card>
-        </Col>
+      {/* ACCIONES DEL MÓDULO DE FACTURACIÓN */}  
+      <Row className="mb-4">  
+        <Col md="12">  
+          <Card className="shadow border-0">  
+            <CardBody className="text-center">  
+              <h5 className="mb-4">Acciones del Módulo de Facturación</h5>  
+              <div className="d-flex flex-wrap justify-content-center gap-3">  
+                <Button color="primary" href="/admin/facturacion/crear" className="m-2">  
+                  <i className="ni ni-fat-add mr-2" />  
+                  Crear Factura  
+                </Button>  
+                  
+                <Button color="info" href="/admin/facturacion/pagos" className="m-2">  
+                  <i className="ni ni-credit-card mr-2" />  
+                  Registrar Pago  
+                </Button>  
+                  
+                <Button color="success" href="/admin/facturacion/contratos" className="m-2">  
+                  <i className="ni ni-folder-17 mr-2" />  
+                  Ver Contratos  
+                </Button>  
+                  
+                <Button color="warning" href="/admin/facturacion/canjes" className="m-2">  
+                  <i className="ni ni-delivery-fast mr-2" />  
+                  Gestionar Canjes  
+                </Button>  
+                  
+                <Button color="default" href="/admin/facturacion/cai" className="m-2">  
+                  <i className="ni ni-tag mr-2" />  
+                  Administrar CAI  
+                </Button>  
+                  
+                <Button color="danger" href="/admin/facturacion/historial" className="m-2">  
+                  <i className="ni ni-archive-2 mr-2" />  
+                  Ver Historial  
+                </Button>  
+              </div>  
+            </CardBody>  
+          </Card>  
+        </Col>    
       </Row>
 
       {/* MÉTRICAS RESUMIDAS */}

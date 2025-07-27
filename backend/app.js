@@ -69,7 +69,7 @@ const archivoRoutes = require('./rutas/facturacion/archivoRoutes');
 const descuentoRoutes = require('./rutas/facturacion/descuentoRoutes');
 const formaPagoRoutes = require('./rutas/facturacion/formaPagoRoutes');
 
-const facturaRoutes = require('./rutas/facturacion/facturaRoutes');
+const caiRoutes = require('./rutas/facturacion/caiRoutes.js');
 
 // rutas de documentación Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -93,6 +93,8 @@ app.use('/api/optica', facturaDetalleRutas);
 app.use('/api/optica', detalleDescuentoRutas);
 app.use('/api/optica', descuentoRoutes);
 app.use('/api/optica', formaPagoRoutes);
+
+app.use('/api/optica', caiRoutes);
 
 app.use('/api/optica', archivoRoutes);
 app.use('/api/optica', express.static('uploads')); 
@@ -139,6 +141,8 @@ const Descuento = require('./modelos/facturacion/Descuento');
 const DetalleDescuento = require('./modelos/facturacion/DetalleDescuento');
 const Atributo = require('./modelos/productos/Atributo');
 
+const Cai = require('./modelos/facturacion/Cai'); 
+
 //modelos de productos
 const Producto = require('./modelos/productos/ProductoModel');
 const CategoriaProducto = require('./modelos/productos/CategoriaProducto');
@@ -168,7 +172,7 @@ const startServer = async () => {
     await Examen_Vista.sync();
     await Diagnostico.sync();
     await ReparacionDeLentes.sync();
-    console.log('✅ Modelos de consulta exámenes sincronizados.');
+    console.log('✅ Modelos de consulta sincronizados.');
 
     // Sincronizar el resto (productos, etc.)
     await CategoriaProducto.sync();
@@ -178,14 +182,15 @@ const startServer = async () => {
     
     console.log('✅ Modelos de productos/inventario sincronizados.');
 
-        // Sincronizar modelos de Fcaturacion
+        // Sincronizar modelos de Facturacion
     await FormaPago.sync();
     await Factura.sync();
     await Descuento.sync();
     await DetalleDescuento.sync();
     await FacturaDetalle.sync();
     await Factura.sync();
-    console.log('✅ Modelos de  Facturacion sincronizados.');
+    await Cai.sync();
+    console.log('✅ Modelos de Facturacion sincronizados.');
 
     // Iniciar servidor
     const PORT = process.env.puerto || 3000;
