@@ -19,7 +19,6 @@ const InventarioHub = () => {
         <Row className="justify-content-center">
           
           <Col lg="10" md="12">
-            <h1 className="display-2 text-white mb-4">Gestión de Inventario</h1>
 
             <Row>
               {/* Card para Inventario General */}

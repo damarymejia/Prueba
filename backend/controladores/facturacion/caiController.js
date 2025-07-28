@@ -22,10 +22,16 @@ exports.crearCAI = async (req, res) => {
     // Desactivar CAI anterior  
     await CAI.update({ activo: false }, { where: { activo: true } });  
       
-    // Crear nuevo CAI  
-    const nuevoCAI = await CAI.create(req.body);  
-    res.status(201).json({ mensaje: 'CAI creado exitosamente', cai: nuevoCAI });  
-  } catch (error) {  
+    // Remover idCAI del body si viene incluido  
+    const { idCAI, ...datosCAI } = req.body;  
+      
+    const nuevoCAI = await CAI.create(datosCAI);  
+    res.status(201).json({  
+      mensaje: 'CAI creado exitosamente',  
+      idCAI: nuevoCAI.idCAI, // El ID generado automáticamente  
+      cai: nuevoCAI  
+    });  
+  } catch (error) {   
     res.status(500).json({ mensaje: 'Error al crear CAI', error: error.message });  
   }  
 };  

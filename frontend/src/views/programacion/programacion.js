@@ -1,145 +1,186 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { 
-  Card, CardHeader, CardBody, Container, Row, Col, Button, 
-  Table, Badge, DropdownMenu, DropdownItem, UncontrolledDropdown, 
-  DropdownToggle 
+import React from "react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Table,
+  Container,
+  Row,
+  Col,
+  Button,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+
 import HeaderResponsive from "components/Headers/HeaderResponsive";
 
 const Programacion = () => {
   const navigate = useNavigate();
-  const [programas, setProgramas] = useState([
+  // Simulación de datos de pauta publicitaria
+  const pauta = [
     {
-      id: 1,
-      nombre: "Noticiero Canal 40",
-      tipo: "noticia",
-      dia: "Lunes - Viernes",
-      hora: "07:00 AM",
-      duracion: "60 min",
-      estado: "activo",
-      productor: "Juan Pérez",
-      camarografo: "María Gómez",
-      editor: "Carlos Ruiz"
+      bloque: "NOTICIAS 60 MINUTOS",
+      comerciales: [
+        { hora: "7:05", empresas: [] },
+        { hora: "7:30", empresas: ["CLARO", "SECOPV", "MUNICOM", "MACONSA", "UNAH"] },
+        { hora: "7:55", empresas: ["MOTOMUNDO", "MUNICOM", "SINET"] },
+        { hora: "8:20", empresas: ["CLARO", "MUNICOM", "SANMARQUEÑA COOP", "SONRÍA"] },
+        { hora: "8:30", empresas: ["CLARO", "COFICESA", "MUNICOM", "VILLAMIX"] }
+      ]
     },
     {
-      id: 2,
-      nombre: "Documental",
-      tipo: "documental",
-      dia: "Domingo",
-      hora: "06:00 PM",
-      duracion: "120 min",
-      estado: "activo",
-      productor: "Ana López",
-      camarografo: "Pedro Martínez",
-      editor: "Laura Díaz"
-    }
-  ]);
-
-  const toggleEstado = (id) => {
-    setProgramas(programas.map(programa => 
-      programa.id === id ? {
-        ...programa,
-        estado: programa.estado === "activo" ? "pausado" : "activo"
-      } : programa
-    ));
-  };
-
+      bloque: "PELÍCULA MATUTINA",
+      comerciales: [
+        { hora: "9:00", empresas: ["CLARO", "SECOPV", "SONRÍA", "CABLECOLOR"] },
+        { hora: "9:30", empresas: ["LACOLONIA", "TIENDAERFA", "SINET"] },
+        { hora: "10:00", empresas: ["CLARO", "SANMARQUEÑA COOP", "COFICESA"] },
+        { hora: "10:30", empresas: ["MOTOMUNDO", "SECOPV", "PROMODJFLECHA"] },
+        { hora: "11:00", empresas: ["CLARO", "MUNICOM", "MACONSA"] }
+      ]
+    },
+    {
+      bloque: "DOCUMENTALES",
+      comerciales: [
+        { hora: "11:15", empresas: ["COFICESA", "MUNICOM"] },
+        { hora: "11:30", empresas: ["CLARO", "TIENDAERFA"] },
+        { hora: "11:55", empresas: ["SECOPV", "MACONSA", "UNAH", "VILLAMIX"] }
+      ]
+    },
+    {
+      bloque: "TVN40 MERIDIANO",
+      comerciales: [
+        { hora: "12:10", empresas: ["LACOLONIA", "TIENDAERFA", "CABLECOLOR"] },
+        { hora: "12:25", empresas: ["CLARO", "SANMARQUEÑA COOP", "SONRÍA", "COFICESA"] },
+        { hora: "12:35", empresas: ["MOTOMUNDO", "MACONSA", "TIENDAERFA"] },
+        { hora: "12:45", empresas: ["SINET", "MUNICOM"] },
+        { hora: "12:55", empresas: ["CLARO", "SONRÍA", "MUNICOM"] }
+      ]
+    },
+      {
+  bloque: "INFANTILES",
+  comerciales: [
+    { hora: "1:15", empresas: ["MACONSA", "PROMODJFLECHA"] },
+    { hora: "1:45", empresas: ["MUNICOM"] }
+  ]
+  },
+  {
+  bloque: "VIVA LA MÚSICA",
+  comerciales: [
+    { hora: "2:00", empresas: ["CLARO", "SANMARQUEÑACOOP", "SECOPV"] },
+    { hora: "2:30", empresas: ["LACOLONIA", "MOTOMUNDO", "TIENDAERFA", "COFICESA"] },
+    { hora: "3:00", empresas: ["CLARO", "SANMARQUEÑACOOP", "SECOPV", "VILLAMIX"] },
+    { hora: "3:30", empresas: ["CLARO", "MACONSA", "SINET", "PROMODJFLECHA"] },
+    { hora: "4:00", empresas: ["CLARO", "COFICESA", "CABLECOLOR"] }
+  ]
+},
+{
+  bloque: "SERIES",
+  comerciales: [
+    { hora: "5:00", empresas: ["CLARO", "CABLECOLOR", "MUNICOM", "PROMODJFLECHA"] },
+    { hora: "5:15", empresas: ["SECOPV"] },
+    { hora: "5:30", empresas: ["CLARO", "COFICESA"] },
+    { hora: "5:45", empresas: ["MACONSA"] },
+    { hora: "6:00", empresas: ["CLARO", "MUNICOM", "UNAH"] }
+  ]
+},
+  {
+  bloque: "TV NOTICIAS 40",
+  comerciales: [
+    { hora: "6:10", empresas: ["CLARO", "SANMARQUEÑACOOP", "COFICESA", "TIENDAERFA", "SINET"] },
+    { hora: "6:25", empresas: ["LACOLONIA", "MOTOMUNDO", "SONRÍA", "SECOPV", "MUNICOM"] },
+    { hora: "6:35", empresas: ["CLARO", "CABLECOLOR", "SANMARQUEÑACOOP", "COFICESA"] },
+    { hora: "6:45", empresas: ["MOTOMUNDO", "LACOLONIA", "SONRÍA", "MACONSA", "MUNICOM"] },
+    { hora: "6:55", empresas: ["CLARO", "SECOPV", "CHAVERYASOCIADO", "VILLAMIX"] },
+    { hora: "7:30", empresas: ["CLARO", "MOTOMUNDO", "SANMARQUEÑACOOP", "SONRÍA", "MUNICOM"] },
+    { hora: "8:00", empresas: ["LACOLONIA", "TIENDAERFA", "COFICESA", "MACONSA", "SINET"] },
+    { hora: "8:30", empresas: ["CLARO", "MOTOMUNDO", "SANMARQUEÑACOOP", "MUNICOM", "SECOPV", "CABLECOLOR"] },
+    { hora: "9:00", empresas: ["LACOLONIA", "TIENDAERFA", "COFICESA", "MACONSA", "SINET", "PROMODJFLECHA"] },
+    { hora: "9:30", empresas: ["CLARO", "MOTOMUNDO", "SANMARQUEÑACOOP", "MUNICOM", "CABLECOLOR"] }
+  ]
+},
+{
+  bloque: "CIERRE DE TRANSMISIÓN",
+  comerciales: [
+    { hora: "10:00 PM", empresas: ["CIERRE"] }
+  ]
+}, 
+  
+  ];
+const pautaDomingo = [
+  {
+    bloque: "DOMINGO ESPECIAL",
+    comerciales: [
+      { hora: "7:00", empresas: ["CLARO", "SONRÍA", "MUNICOM"] },
+      { hora: "8:00", empresas: ["MACONSA", "TIENDAERFA", "COFICESA"] },
+      { hora: "9:00", empresas: ["SECOPV", "CABLECOLOR"] },
+      { hora: "10:00", empresas: ["CIERRE"] }
+    ]
+  }
+  ];
   return (
-    
-     <>
-     <HeaderResponsive />
-    <Container className="mt-5" fluid>
-      
-      <Row>
-        <Col>
-          <Card className="shadow">
-            <CardHeader className="border-0 d-flex justify-content-between align-items-center">
-              <h3 className="mb-0">Gestión de Calendario de Programación</h3>
-              <div>
-                  <Button 
-                    color="primary" 
+    <>
+      <HeaderResponsive />
+      <Container className="mt-5" fluid>
+        <Row>
+          <Col>
+            <Card className="shadow">
+              <CardHeader className="border-0 d-flex justify-content-between align-items-center">
+                <h3 className="mb-0">Gestión de Calendario de Programación</h3>
+                <div>
+                  <Button
+                    color="primary"
                     className="me-2"
-                    onClick={() => navigate("/admin/crear-programa")} 
+                    onClick={() => navigate("/admin/crear-programa")}
                   >
                     <i className="ni ni-fat-add mr-2"></i> Nuevo Programa
                   </Button>
-
-                  <Button 
+                  <Button
                     color="success"
                     onClick={() => navigate("/admin/crear-pauta")}
                   >
                     <i className="ni ni-fat-add mr-2"></i> Nueva Pauta
                   </Button>
-              </div>
-            </CardHeader>
-            <CardBody>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th>Programa</th>
-                    <th>Tipo</th>
-                    <th>Día</th>
-                    <th>Hora</th>
-                    <th>Duración</th>
-                    <th>Estado</th>
-                    <th>Equipo</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {programas.map(programa => (
-                    <tr key={programa.id}>
-                      <td>{programa.nombre}</td>
-                      <td>{programa.tipo}</td>
-                      <td>{programa.dia}</td>
-                      <td>{programa.hora}</td>
-                      <td>{programa.duracion}</td>
-                      <td>
-                        <Badge color={programa.estado === "activo" ? "success" : "warning"}>
-                          {programa.estado}
-                        </Badge>
-                      </td>
-                      <td>
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            className="btn-sm"
-                            color="default"
-                            size="sm"
-                          >
-                            Ver equipo
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <DropdownItem>
-                              <strong>Productor:</strong> {programa.productor}
-                            </DropdownItem>
-                            <DropdownItem>
-                              <strong>Camarógrafo:</strong> {programa.camarografo}
-                            </DropdownItem>
-                            <DropdownItem>
-                              <strong>Editor:</strong> {programa.editor}
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </td>
-                      <td>
-                        <Button
-                          color={programa.estado === "activo" ? "warning" : "success"}
-                          size="sm"
-                          onClick={() => toggleEstado(programa.id)}
-                        >
-                          {programa.estado === "activo" ? "Pausar" : "Activar"}
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+                </div>
+              </CardHeader>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row className="mt-4">
+          <Col>
+            <Card className="shadow">
+              <CardHeader className="text-center">
+                <h3 className="mb-0 font-bold text-uppercase">Pauta Publicitaria</h3>
+                <p className="text-primary font-semibold">Lunes a Sábado - Marzo 2025</p>
+              </CardHeader>
+              <CardBody>
+              {pauta.map((bloque, index) => (
+                <div key={index} className="mb-6">
+                  <h5 className="text-blue-500 font-semibold uppercase mb-2">{bloque.bloque}</h5>
+                  <Table bordered responsive className="text-sm align-middle">
+                    <tbody>
+                      <tr>
+                        {bloque.comerciales.map((item, idx) => (
+                          <React.Fragment key={idx}>
+                            <td className="font-bold w-[10%] text-center">{item.hora}</td>
+                            <td className="w-[15%]">
+                              {item.empresas.length > 0 ? (
+                                item.empresas.map((empresa, i) => <div key={i}>{empresa}</div>)
+                              ) : (
+                                <div>&nbsp;</div>
+                              )}
+                            </td>
+                          </React.Fragment>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </Table>
+                </div>
+              ))}
             </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };
