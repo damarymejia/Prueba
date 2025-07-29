@@ -135,13 +135,15 @@ const routes = [
     icon: "ni ni-fat-add text-green",  
     component: CrearFacturaNueva,  
     layout: "/admin",  
+    hidden: true,
   },
   {  
     path: "/facturas",  
     name: "Facturas",  
     icon: "ni ni-single-copy-04 text-pink",  
     component: ListaFacturas,  
-    layout: "/admin",  
+    layout: "/admin", 
+    hidden: true, 
   }, 
   {
     path: "/facturacion/crear",
